@@ -1,6 +1,7 @@
-import 'package:azan_app/home/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
+import 'home/splash_screen.dart';
 
 void main() {
   tz.initializeTimeZones();

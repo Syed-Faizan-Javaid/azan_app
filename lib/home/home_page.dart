@@ -85,10 +85,12 @@ class _HomePageState extends State<HomePage> {
           prayers = state.adhan.prayers;
           return Scaffold(
               body: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             child: Container(
+              constraints: const BoxConstraints(minWidth: 800),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
                 colors: [

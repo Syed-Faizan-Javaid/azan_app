@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     adhanCubit = AdhanCubit();
-    print('print');
     adhanCubit.getAdhanTimes(true);
     super.initState();
     Timer(
