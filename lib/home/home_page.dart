@@ -6,17 +6,20 @@ import 'package:azan_app/home/cubit/adhan_cubit.dart';
 import 'package:azan_app/model/prayer_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage() {
+    print("const");
+  }
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   late Timer _timer;
   String time = DateFormat('hh:mm').format(DateTime.now());
   String zone = DateFormat('a').format(DateTime.now());
@@ -34,6 +37,14 @@ class _HomePageState extends State<HomePage> {
     _adhanCubit = context.read<AdhanCubit>();
     _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) => _update());
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _adhanCubit.checkPermission();
+    }
   }
 
   String formatDate(DateTime date) {
@@ -119,6 +130,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ));
+        } else if (state is LocationIsDisabled) {
+          return Scaffold(
+            body: Column(
+              children: [
+                const Center(
+                  child:
+                      Text("Location Service is Disabled.Please Enable your location.if location is already enabled then restart your application"),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Geolocator.openLocationSettings();
+                    },
+                    child: const Text("Enable Location"))
+              ],
+            ),
+          );
         }
         return const Center(child: CircularProgressIndicator());
       },

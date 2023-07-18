@@ -13,6 +13,11 @@ class FetchNamazTiming extends AdhanState {
   List<Object> get props => [adhan, selectedPrayerTimeModel];
 }
 
+class LocationIsDisabled extends AdhanState {
+  @override
+  List<Object> get props => [];
+}
+
 class UpdatePrayerTimes extends AdhanState {
   PrayerTimeModel selectedPrayerTimeModel;
   List<PrayerTimeModel> prayers;

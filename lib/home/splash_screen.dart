@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => BlocProvider.value(
                   value: adhanCubit,
-                  child: const HomePage(),
+                  child: HomePage(),
                 ))));
   }
 

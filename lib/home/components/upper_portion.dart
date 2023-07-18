@@ -166,7 +166,7 @@ class _UpperPortionState extends State<UpperPortion> {
               ),
             ),
           ),
-          Image.network(
+          Image.asset(
             "images/sun_vector.png",
             width: 32,
             height: 34,

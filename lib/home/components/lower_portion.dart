@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:azan_app/persistent_storage/shared_prefs.dart';
 import 'package:azan_app/responsive/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +15,7 @@ class LowerPortion extends StatelessWidget {
   PrayerTimeModel prayerTimeModel;
   String remainingTime;
   String prayerName;
+  late Timer _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,9 @@ class LowerPortion extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: prayers.length,
                       itemBuilder: (context, int index) {
+                        if (prayers[index].isActiveTime == true) {
+                          _playAudio(prayers[index].prayerName, prayers[index].isActiveTime);
+                        }
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
                           padding: const EdgeInsets.symmetric(vertical: 1),
@@ -167,5 +175,22 @@ class LowerPortion extends StatelessWidget {
             ),
           ))
         : Container();
+  }
+
+  _playAudio(String? namazName, bool isActiveNamazTime) {
+    bool playAudio = false;
+    String? namazNameFromPref = SharedPrefs.getString("namazName");
+    if (namazNameFromPref != namazName) {
+      SharedPrefs.setString("namazName", namazName!);
+      playAudio = isActiveNamazTime;
+      if (playAudio == true) {
+        AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+        assetsAudioPlayer.open(
+          Audio("audio/allahu_akbar_short.mp3"),
+          showNotification: true,
+        );
+        playAudio = false;
+      }
+    }
   }
 }
